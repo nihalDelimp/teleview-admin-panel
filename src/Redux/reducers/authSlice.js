@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     email: "",
-    user : {}
+    user : {},
+    movies : "",
 };
 
 export const authSlice = createSlice({
@@ -21,9 +22,12 @@ export const authSlice = createSlice({
             state.token = "";
             localStorage.removeItem('token')
         },
+        setmovies: (state, action) => {
+            state.movies = action.payload;
+        },
     },
 });
 
-export const { setAccessToken, saveUser , logout } = authSlice.actions;
+export const { setAccessToken, saveUser , logout,setmovies } = authSlice.actions;
 
 export default authSlice.reducer;

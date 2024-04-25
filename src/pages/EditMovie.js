@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { authAxios, withoutAuthAxios } from "../config/config";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 // import { toast } from 'react-toastify';
 
 const EditMovie = () => {
+
+  const navigate = useNavigate()
+  const id = useSelector(state => state?.auth?.movies)
   const [formData, setFormData] = useState({
     thumbnail: "",
     title: "",
@@ -30,7 +35,6 @@ const EditMovie = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    // For checkboxes, toggle the checked state
     const newValue = type === "checkbox" ? !formData[name] : value;
 
     setFormData((prevState) => ({
@@ -49,56 +53,45 @@ const EditMovie = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    console.log(formData);
-
-    await authAxios()
-      .post("/movies/create-movie", formData)
-      .then((response) => {
-        const resData = response.data;
+  const fetchMovies = async () => {
+    try {
+      const response = await withoutAuthAxios().get(`/movies/get-movie-by-id/${id}`);
+      const resData = response.data;
+      if (resData.status === 1) {
+        const movieData = resData.data;
+        movieData.release = movieData.release ? new Date(movieData.release).toISOString().split('T')[0] : '';
+        setFormData(movieData);
+      } else {
+        toast.error(resData.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  };  
+  const updateMovie = async () => {
+    try {
+      const response = await authAxios().post(`/movies/update-movie/${id}`, formData);
+      const resData = response.data;
+      if (resData.status === 1) {
         console.log(resData);
-
-        if (resData.status === 1) {
-          console.log("Movie created successfully:", response.data);
-          toast.success(resData.message);
-          setFormData({
-            thumbnail: "",
-            title: "",
-            rating: 0,
-            description: "",
-            timing: "",
-            language: "",
-            country: "",
-            genre: "",
-            category: "",
-            release: "",
-            trailerURL: "",
-            casting: [
-              {
-                profileImage: "",
-                name: "",
-                designation: "",
-              },
-            ],
-          });
-        } else {
-          toast.error(resData.message);
-          console.log("Movie created successfully:", resData.message);
-        }
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message);
-      });
+        toast.success(resData.message);
+      } else {
+        toast.error(resData.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   };
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
 
   return (
     <>
       <h1>Movies</h1>
 
       <form
-        onSubmit={handleSubmit}
         className="max-w-lg mx-auto mt-8 movies--add--form"
       >
         <label className="block mb-2">
@@ -106,6 +99,7 @@ const EditMovie = () => {
           <input
             type="text"
             name="thumbnail"
+            value={formData.thumbnail}
             onChange={handleChange}
             className="block w-full mt-1"
             required
@@ -317,6 +311,7 @@ const EditMovie = () => {
           <button
             type="submit"
             className="mt-4 bg-black text-white min-w-[200px] py-2 px-4 rounded"
+            onClick={updateMovie}
           >
             Submit
           </button>
