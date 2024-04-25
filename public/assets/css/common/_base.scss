@@ -1,0 +1,74 @@
+@import 'typeface-inter';
+@import 'typeface-roboto';
+
+*{
+    box-sizing: border-box;
+}
+
+:root {
+    --primarycolor: '#786BD2';
+    --graycolor: '#D0D0D0';
+    --resetcolor: '#D26B6B';
+    --textcolor: '#2F2F38';
+    --textgray: '#838383';
+    --black: '#000000';
+    --white: '#FFFFFF';
+}
+
+.primarycolor {
+    color: var(--primarycolor);
+}
+
+.graycolor {
+    color: var(--graycolor);
+}
+
+.resetcolor {
+    color: var(--resetcolor);
+}
+
+.textcolor {
+    color: var(--textcolor);
+}
+
+.textgray {
+    color: var(--textgray);
+}
+
+.black {
+    color: var(--black);
+}
+
+.white {
+    color: var(--white);
+}
+
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: var(--white);
+    font-family: 'Inter', sans-serif;
+}
+
+.button-reset {
+    background-color: var(--resetcolor);
+}
+
+.container--base {
+    max-width: 1470px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.numberinput {
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+}
