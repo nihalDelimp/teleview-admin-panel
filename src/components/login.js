@@ -60,7 +60,7 @@ function Login(props) {
       <div className="flex flex-col overflow-hidden bg-white rounded-md shadow-lg max md:flex-row md:flex-1 lg:max-w-screen-md">
         <div className="md:w-80 md:flex-shrink-0 md:flex md:flex-col md:items-center md:justify-evenly">
           <img
-            class="w-full h-full object-cover"
+            className="w-full h-full object-cover"
             src="https://wallpapers.com/images/featured/lock-screen-6bxvm8jv0f8vlpri.jpg"
           />
         </div>

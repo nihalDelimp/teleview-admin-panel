@@ -78,7 +78,7 @@ const Header = () => {
                             <button
                                 className="p-2 text-gray-600 rounded cursor-pointer lg:hidden hover:text-gray-900 bg-gray-100 ml-[20px] hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100"
                             >
-                                <RxHamburgerMenu lassName="w-6 h-6" />
+                                <RxHamburgerMenu className="w-6 h-6" />
                             </button>
                         </div>
                     </div>

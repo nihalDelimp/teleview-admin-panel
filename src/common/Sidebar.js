@@ -28,7 +28,7 @@ const Sidebar = () => {
                             <li>
                                 <Link to="/Home" className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
                                     <AiOutlineHome className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" />
-                                    <span className="ml-3" sidebar-toggle-item>Welcome</span>
+                                    <span className="ml-3" >Welcome</span>
                                 </Link>
                             </li>
                             <li >
@@ -38,12 +38,12 @@ const Sidebar = () => {
                                     onClick={() => toggleDropdown('dropdown1')}
                                 >
                                     <PiVideoCamera className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75" />
-                                    <span className="flex-1 ml-3 text-left whitespace-nowrap" sidebar-toggle-item>Movies</span>
+                                    <span className="flex-1 ml-3 text-left whitespace-nowrap" >Movies</span>
                                     <GoChevronDown className="w-6 h-6" />
                                 </button>
                                 <ul className={`py-2 space-y-2 ${dropdowns['dropdown1'] ? 'block' : 'hidden'}`}>
                                     <li>
-                                        <Link to="/movies" className="flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100">All Movies</Link>
+                                        <Link to="/movies" className="flex items-center p-2 text-base text-gray-900 tranition duration-75 rounded-lg pl-11 group hover:bg-gray-100">All Movies</Link>
                                     </li>
                                     <li>
                                         <Link to="/add-movie" className={`flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ${location.pathname === '/add-movie' ? 'bg-gray-100' : ''}`}>Add Movie</Link>

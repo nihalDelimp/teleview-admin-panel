@@ -7,6 +7,7 @@ import Login from "./components/login";
 import Movies from "./pages/AddMovie";
 import AllMovies from "./pages/AllMovies";
 import AddBanner from "./pages/AddBanner";
+import EditMovie from "./pages/EditMovie";
 
 function App() {
   return (
@@ -35,6 +36,14 @@ function App() {
             element={
               <CommonLayout>
                 <Movies />
+              </CommonLayout>
+            }
+          />
+          <Route
+            path="/edit-movie"
+            element={
+              <CommonLayout>
+                <EditMovie />
               </CommonLayout>
             }
           />
