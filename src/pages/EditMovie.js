@@ -253,7 +253,7 @@ const EditMovie = () => {
         {/* Casting Section */}
         {formData.casting.map((actor, index) => (
           <div key={index} className="mt-4 border border-gray-300 p-4 rounded">
-            <label className="block mb-2">
+            {/* <label className="block mb-2">
               Profile Image:
               <input
                 type="text"
@@ -263,7 +263,7 @@ const EditMovie = () => {
                 className="block w-full mt-1"
                 required
               />
-            </label>
+            </label> */}
 
             <label className="block mb-2">
               Name:
