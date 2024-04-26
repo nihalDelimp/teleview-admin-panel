@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { authAxios, withoutAuthAxios } from "../config/config";
+import { authAxios } from "../config/config";
 import { toast } from "react-toastify";
-// import { toast } from 'react-toastify';
 
 const AddMovie = () => {
   const [formData, setFormData] = useState({
@@ -27,17 +26,17 @@ const AddMovie = () => {
     ],
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+const handleChange = (e) => {
+  const { name, type, checked, files } = e.target;
 
-    // For checkboxes, toggle the checked state
-    const newValue = type === "checkbox" ? !formData[name] : value;
+  const newValue = type === "file" ? files[0] : type === "checkbox" ? checked : e.target.value;
 
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: newValue,
-    }));
-  };
+  setFormData((prevState) => ({
+    ...prevState,
+    [name]: newValue,
+  }));
+};
+
 
   const handleCastingChange = (index, e) => {
     const { name, value } = e.target;
@@ -51,47 +50,64 @@ const AddMovie = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(formData);
-
-    await authAxios()
-      .post("/movies/create-movie", formData)
-      .then((response) => {
-        const resData = response.data;
-        console.log(resData);
-
-        if (resData.status === 1) {
-          console.log("Movie created successfully:", response.data);
-          toast.success(resData.message);
-          setFormData({
-            thumbnail: "",
-            title: "",
-            rating: 0,
-            description: "",
-            timing: "",
-            language: "",
-            country: "",
-            genre: "",
-            category: "",
-            release: "",
-            trailerURL: "",
-            casting: [
-              {
-                profileImage: "",
-                name: "",
-                designation: "",
-              },
-            ],
-          });
-        } else {
-          toast.error(resData.message);
-          console.log("Movie created successfully:", resData.message);
+  
+    try {
+      const formDataToSend = new FormData();
+  
+      // Append thumbnail file
+      formDataToSend.append("thumbnail", formData.thumbnail);
+  
+      // Append all other form fields to formDataToSend
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "thumbnail" && key !== "casting") {
+          formDataToSend.append(key, value);
         }
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message);
       });
+  
+      // Append casting data
+      formData.casting.forEach((actor, index) => {
+        Object.entries(actor).forEach(([actorKey, actorValue]) => {
+          formDataToSend.append(`casting[${index}][${actorKey}]`, actorValue);
+        });
+      });
+  
+      // Send the formDataToSend to the server
+      const response = await authAxios().post("/movies/create-movie", formDataToSend);
+      const resData = response.data;
+  
+      if (resData.status === 1) {
+        toast.success(resData.message);
+        setFormData({
+          thumbnail: "",
+          title: "",
+          rating: 0,
+          description: "",
+          timing: "",
+          language: "",
+          country: "",
+          genre: "",
+          category: "",
+          release: "",
+          trailerURL: "",
+          addBanner: false,
+          addoscar: false,
+          casting: [
+            {
+              profileImage: "",
+              name: "",
+              designation: "",
+            },
+          ],
+        });
+      } else {
+        toast.error(resData.message);
+        console.log("Movie creation failed:", resData.message);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   };
+  
 
   return (
     <>
@@ -104,7 +120,7 @@ const AddMovie = () => {
         <label className="block mb-2">
           Thumbnail:
           <input
-            type="text"
+            type="file"
             name="thumbnail"
             onChange={handleChange}
             className="block w-full mt-1"

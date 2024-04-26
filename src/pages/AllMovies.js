@@ -61,10 +61,10 @@ const handleEdit =(e)=>{
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {movies?.map((movie) => (
             <div key={movie._id} className="bg-white rounded-lg shadow-md p-2 hover:bg-black transition-all group">
-              <img src={movie.thumbnail} alt={movie.title} className="mb-2 w-full rounded-lg h-[250px] object-cover object-center" />
+              <img src={`http://localhost:5000/${movie.thumbnail}`} alt={movie.title} className="mb-2 w-full rounded-lg h-[250px] object-cover object-center" />
               <div className='p-2'>
                 <h2 className="text-xl font-semibold mb-2 group-hover:text-white">{movie.title}</h2>
-                <p className="text-gray-700 group-hover:text-white">{movie.description.substring(0, 50)}...</p>
+                <p className="text-gray-700 group-hover:text-white">{movie?.description?.substring(0, 50)}...</p>
                 <p className="text-gray-600 mt-2 group-hover:text-white"><b>Rating:</b> {movie.rating}</p>
 
                 <Link to={movie.trailerURL} target="_blank" rel="noopener noreferrer" className="py-2 px-5 bg-black text-white font-semibold rounded-full shadow-md flex items-center justify-center gap-[5px] mt-3 group-hover:text-black group-hover:bg-white"><IoPlaySharp /> Watch Trailer</Link>
