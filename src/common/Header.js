@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { RxHamburgerMenu } from "react-icons/rx";
 
 
-const Header = () => {
+const Header = ({toggleSidebar}) => {
     const navigate = useNavigate();
 
     const [logoutDropdown, setLogoutDropdown] = useState(false)
@@ -21,6 +21,10 @@ const Header = () => {
             navigate("/")
         }
     }, []);
+
+    const handleClick = () => {
+        toggleSidebar()
+      }
 
     return (
         <header className="fixed z-30 w-[100%] bg-[#000] border-b border-gray-200">
@@ -77,6 +81,7 @@ const Header = () => {
 
                             <button
                                 className="p-2 text-gray-600 rounded cursor-pointer lg:hidden hover:text-gray-900 bg-gray-100 ml-[20px] hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100"
+                                onClick={handleClick}
                             >
                                 <RxHamburgerMenu className="w-6 h-6" />
                             </button>

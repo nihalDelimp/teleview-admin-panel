@@ -1,11 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineHome } from "react-icons/ai";
 import { PiVideoCamera } from "react-icons/pi";
 import { GoChevronDown } from "react-icons/go";
 
-const Sidebar = () => {
+const Sidebar = ({sidebarState, setSidebarState}) => {
     const location = useLocation();
     const [dropdowns, setDropdowns] = useState({});
 
@@ -15,11 +15,15 @@ const Sidebar = () => {
             [dropdownName]: !prevState[dropdownName] // Toggle the dropdown state based on its current value
         }));
     };
+
+    useEffect(() => {
+        setSidebarState(false);
+      }, [location]);
+
     return (
+        <>
         <aside
-            id="sidebar"
-            className="fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 hidden w-64 h-full pt-16 font-normal duration-75 lg:flex transition-width"
-            aria-label="Sidebar"
+            className={`fixed top-0 left-0 z-20 flex flex-col flex-shrink-0 w-64 h-full pt-16 font-normal duration-75 flex transition-width ${sidebarState ? 'sidebarmenu--active': 'sidebarmenu'}`}
         >
             <div className="relative flex flex-col flex-1 min-h-0 pt-0 bg-white border-r border-gray-200">
                 <div className="flex flex-col flex-1 pt-5 pb-28 overflow-y-auto scrollbar scrollbar-w-2 scrollbar-thumb-rounded-[0.1667rem] scrollbar-thumb-slate-200 scrollbar-track-gray-400">
@@ -58,6 +62,9 @@ const Sidebar = () => {
                 </div>
             </div>
         </aside>
+
+        {sidebarState ? <div className='sidebar--overlay' onClick={() => setSidebarState(false)}></div>: null}
+        </>
     );
 }
 
