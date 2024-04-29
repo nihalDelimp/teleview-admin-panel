@@ -130,175 +130,196 @@ const EditMovie = () => {
 
   return (
     <>
-      <h1>Movies</h1>
 
-      <form className="max-w-lg mx-auto mt-8 movies--add--form">
-        {formData.thumbnailURL ? (
-          <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" />
-        ) : (
-          <img
-            src={`${process.env.REACT_APP_BASEURL}/${formData?.thumbnail}`}
-          />
-        )}
-        <label className="block mb-2">
-          Thumbnail:
-          <input
-            type="file"
-            name="thumbnail"
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-bold my-8">Edit Movie</h1>
+        <div className="movies--add--form">
+          <form>
 
-        <label className="block mb-2">
-          Title:
-          <input
-            type="text"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+            <div className="container--addmovie">
+              <div className="movie-info-add">
+                <div className="form--data">
+                  <label className="block mb-2">
+                    Thumbnail:
 
-        <label className="block mb-2">
-          Rating:
-          <input
-            type="number"
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            className="block w-full mt-1"
-          />
-        </label>
+                    <div className="flex items-center">
 
-        <label className="block mb-2">
-          Description:
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                      {formData.thumbnailURL ? (
+                        <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" className="w-[100px] aspect-square rounded-[50px] object-cover object-center" />
+                      ) : (
+                        <img
+                          src={`${process.env.REACT_APP_BASEURL}/${formData?.thumbnail}`}
+                          className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
+                        />
+                      )}
 
-        <label className="block mb-2">
-          Timing:
-          <input
-            type="text"
-            name="timing"
-            value={formData.timing}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                      <input
+                        type="file"
+                        name="thumbnail"
+                        onChange={handleChange}
+                        className="block w-full mt-1"
+                        required
+                      />
+                    </div>
+                  </label>
 
-        <label className="block mb-2">
-          Language:
-          <input
-            type="text"
-            name="language"
-            value={formData.language}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                  <label className="block mb-2">
+                    Title:
+                    <input
+                      type="text"
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
 
-        <label className="block mb-2">
-          Country:
-          <input
-            type="text"
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                  <label className="block mb-2">
+                    Rating:
+                    <input
+                      type="number"
+                      name="rating"
+                      value={formData.rating}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                    />
+                  </label>
 
-        <label className="block mb-2">
-          Genre:
-          <input
-            type="text"
-            name="genre"
-            value={formData.genre}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                  <label className="block mb-2">
+                    Description:
+                    <textarea
+                      name="description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
 
-        <label className="block mb-2">
-          Category:
-          <select
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          >
-            <option value="">Select Category</option>
-            {["Movies", "TV Shows", "Web Series"].map((category, index) => (
-              <option key={index} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </label>
+                  <label className="block mb-2">
+                    Timing:
+                    <input
+                      type="text"
+                      name="timing"
+                      value={formData.timing}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
 
-        <label className="block mb-2">
-          Release:
-          <input
-            type="date"
-            name="release"
-            value={formData.release}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                  <label className="block mb-2">
+                    Language:
+                    <input
+                      type="text"
+                      name="language"
+                      value={formData.language}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
 
-        <label className="block mb-2">
-          Add Banner:
-          <input
-            type="checkbox"
-            name="addBanner"
-            checked={formData.addBanner}
-            onChange={handleChange}
-            className="block mt-1"
-          />
-        </label>
-        <label className="block mb-2">
-          Add to Oscar:
-          <input
-            type="checkbox"
-            name="addoscar"
-            checked={formData.addoscar}
-            onChange={handleChange}
-            className="block mt-1"
-          />
-        </label>
-        <label className="block mb-2">
-          Trailer URL:
-          <input
-            type="text"
-            name="trailerURL"
-            value={formData.trailerURL}
-            onChange={handleChange}
-            className="block w-full mt-1"
-            required
-          />
-        </label>
+                  <label className="block mb-2">
+                    Country:
+                    <input
+                      type="text"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
 
-        {/* Casting Section */}
-        {formData.casting.map((actor, index) => (
-          <div key={index} className="mt-4 border border-gray-300 p-4 rounded">
-            {/* <label className="block mb-2">
+                  <label className="block mb-2">
+                    Genre:
+                    <input
+                      type="text"
+                      name="genre"
+                      value={formData.genre}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
+
+                  <label className="block mb-2">
+                    Category:
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    >
+                      <option value="">Select Category</option>
+                      {["Movies", "TV Shows", "Web Series"].map((category, index) => (
+                        <option key={index} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+
+                  <label className="block mb-2">
+                    Release:
+                    <input
+                      type="date"
+                      name="release"
+                      value={formData.release}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
+                  <div className="banner--add">
+                    <label className="block mb-2" htmlFor={`add-banner`}>
+                      Add Banner:
+                      <input
+                        type="checkbox"
+                        name="addBanner"
+                        id="add-banner"
+                        checked={formData.addBanner}
+                        onChange={handleChange}
+                        className="block mt-1"
+                      />
+
+                    </label>
+                    <label className="block mb-2">
+                      Add to Oscar:
+                      <input
+                        type="checkbox"
+                        name="addoscar"
+                        checked={formData.addoscar}
+                        onChange={handleChange}
+                        className="block mt-1"
+                      />
+                    </label>
+                  </div>
+                  <label className="block mb-2">
+                    Trailer URL:
+                    <input
+                      type="text"
+                      name="trailerURL"
+                      value={formData.trailerURL}
+                      onChange={handleChange}
+                      className="block w-full mt-1"
+                      required
+                    />
+                  </label>
+
+                </div>
+
+
+
+              </div>
+
+              <div className="casting-info-add">
+                {formData.casting.map((actor, index) => (
+                  <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
+                    {/* <label className="block mb-2">
               Profile Image:
               <input
                 type="text"
@@ -310,58 +331,65 @@ const EditMovie = () => {
               />
             </label> */}
 
-            <label className="block mb-2">
-              Name:
-              <input
-                type="text"
-                name="name"
-                value={actor.name}
-                onChange={(e) => handleCastingChange(index, e)}
-                className="block w-full mt-1"
-                required
-              />
-            </label>
+                    <label className="block mb-2">
+                      Name:
+                      <input
+                        type="text"
+                        name="name"
+                        value={actor.name}
+                        onChange={(e) => handleCastingChange(index, e)}
+                        className="block w-full mt-1"
+                        required
+                      />
+                    </label>
 
-            <label className="block mb-2">
-              Designation:
-              <input
-                type="text"
-                name="designation"
-                value={actor.designation}
-                onChange={(e) => handleCastingChange(index, e)}
-                className="block w-full mt-1"
-                required
-              />
-            </label>
-          </div>
-        ))}
+                    <label className="block mb-2">
+                      Designation:
+                      <input
+                        type="text"
+                        name="designation"
+                        value={actor.designation}
+                        onChange={(e) => handleCastingChange(index, e)}
+                        className="block w-full mt-1"
+                        required
+                      />
+                    </label>
+                  </div>
+                ))}
 
-        <div className="flex items-center justify-between gap-[10px]">
-          <button
-            type="button"
-            className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
-            onClick={() =>
-              setFormData((prevState) => ({
-                ...prevState,
-                casting: [
-                  ...prevState.casting,
-                  { profileImage: "", name: "", designation: "" },
-                ],
-              }))
-            }
-          >
-            Add Casting
-          </button>
+                <button
+                  type="button"
+                  className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
+                  onClick={() =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      casting: [
+                        ...prevState.casting,
+                        { profileImage: "", name: "", designation: "" },
+                      ],
+                    }))
+                  }
+                >
+                  Add Casting
+                </button>
 
-          <button
-            type="submit"
-            className="mt-4 bg-black text-white min-w-[200px] py-2 px-4 rounded"
-            onClick={updateMovie}
-          >
-            Submit
-          </button>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-[10px]">
+              <button
+                type="submit"
+                className="mt-4 bg-black text-white min-w-[200px] py-2 px-4 rounded"
+                onClick={updateMovie}
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+
         </div>
-      </form>
+
+      </div>
     </>
   );
 };

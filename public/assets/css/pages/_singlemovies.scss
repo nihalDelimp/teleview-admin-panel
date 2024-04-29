@@ -3,3 +3,50 @@
     border-radius: 5px;
     padding: 10px 15px;
 }
+
+.movies--add--form {
+    padding: 20px 25px;
+    border: 1px solid #f3f3f3;
+    border-radius: 10px;
+    background: #f9f9f9;
+    .container--addmovie {
+        display: flex;
+        gap: 20px;
+
+        .movie-info-add {
+            width: 60%;
+            display: flex;
+            gap: 15px;
+
+            .banner--add {
+                display: flex;
+
+                label {
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row-reverse;
+                    gap: 10px;
+                    justify-content: flex-end;
+                }
+            }
+
+            .form--data {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+
+        .casting-info-add {
+            width: 40%;
+
+            .casting--item {background: #f3f4f6;}
+
+            button {
+                background: #000;
+            }
+        }
+    }
+}
