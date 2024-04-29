@@ -6,9 +6,8 @@ import { useNavigate } from "react-router-dom";
 // import { toast } from 'react-toastify';
 
 const EditMovie = () => {
-
-  const navigate = useNavigate()
-  const id = useSelector(state => state?.auth?.movies)
+  const navigate = useNavigate();
+  const id = useSelector((state) => state?.auth?.movies);
   const [formData, setFormData] = useState({
     thumbnail: "",
     title: "",
@@ -33,14 +32,30 @@ const EditMovie = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, type, checked, files } = e.target;
 
-    const newValue = type === "checkbox" ? !formData[name] : value;
+    if (type === "file") {
+      const uploadedFile = files[0];
 
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: newValue,
-    }));
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        setFormData((prevState) => ({
+          ...prevState,
+          [name]: uploadedFile,
+          thumbnailURL: reader.result,
+        }));
+      };
+
+      reader.readAsDataURL(uploadedFile);
+    } else {
+      const newValue = type === "checkbox" ? checked : e.target.value;
+
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: newValue,
+      }));
+    }
   };
 
   const handleCastingChange = (index, e) => {
@@ -55,11 +70,15 @@ const EditMovie = () => {
 
   const fetchMovies = async () => {
     try {
-      const response = await withoutAuthAxios().get(`/movies/get-movie-by-id/${id}`);
+      const response = await withoutAuthAxios().get(
+        `/movies/get-movie-by-id/${id}`
+      );
       const resData = response.data;
       if (resData.status === 1) {
         const movieData = resData.data;
-        movieData.release = movieData.release ? new Date(movieData.release).toISOString().split('T')[0] : '';
+        movieData.release = movieData.release
+          ? new Date(movieData.release).toISOString().split("T")[0]
+          : "";
         setFormData(movieData);
       } else {
         toast.error(resData.message);
@@ -67,16 +86,39 @@ const EditMovie = () => {
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
-  };  
-  const updateMovie = async () => {
+  };
+
+  const updateMovie = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await authAxios().post(`/movies/update-movie/${id}`, formData);
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("thumbnail", formData.thumbnail);
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "thumbnail" && key !== "casting") {
+          formDataToSend.append(key, value);
+        }
+      });
+
+      formData.casting.forEach((actor, index) => {
+        Object.entries(actor).forEach(([actorKey, actorValue]) => {
+          formDataToSend.append(`casting[${index}][${actorKey}]`, actorValue);
+        });
+      });
+
+      const response = await authAxios().post(
+        `/movies/update-movie/${id}`,
+        formDataToSend
+      );
       const resData = response.data;
+
       if (resData.status === 1) {
-        console.log(resData);
         toast.success(resData.message);
       } else {
         toast.error(resData.message);
+        console.log("Movie creation failed:", resData.message);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -86,20 +128,23 @@ const EditMovie = () => {
     fetchMovies();
   }, []);
 
-
   return (
     <>
       <h1>Movies</h1>
 
-      <form
-        className="max-w-lg mx-auto mt-8 movies--add--form"
-      >
+      <form className="max-w-lg mx-auto mt-8 movies--add--form">
+        {formData.thumbnailURL ? (
+          <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" />
+        ) : (
+          <img
+            src={`${process.env.REACT_APP_BASEURL}/${formData?.thumbnail}`}
+          />
+        )}
         <label className="block mb-2">
           Thumbnail:
           <input
-            type="text"
+            type="file"
             name="thumbnail"
-            value={formData.thumbnail}
             onChange={handleChange}
             className="block w-full mt-1"
             required

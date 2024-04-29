@@ -26,17 +26,42 @@ const AddMovie = () => {
     ],
   });
 
+// const handleChange = (e) => {
+//   const { name, type, checked, files } = e.target;
+
+//   const newValue = type === "file" ? files[0] : type === "checkbox" ? checked : e.target.value;
+
+//   setFormData((prevState) => ({
+//     ...prevState,
+//     [name]: newValue,
+//   }));
+// };
 const handleChange = (e) => {
   const { name, type, checked, files } = e.target;
 
-  const newValue = type === "file" ? files[0] : type === "checkbox" ? checked : e.target.value;
+  if (type === "file") {
+    const uploadedFile = files[0];
+    
+    const reader = new FileReader();
 
-  setFormData((prevState) => ({
-    ...prevState,
-    [name]: newValue,
-  }));
+    reader.onload = () => {
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: uploadedFile,
+        thumbnailURL: reader.result 
+      }));
+    };
+
+    reader.readAsDataURL(uploadedFile);
+  } else {
+    const newValue = type === "checkbox" ? checked : e.target.value;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: newValue,
+    }));
+  }
 };
-
 
   const handleCastingChange = (index, e) => {
     const { name, value } = e.target;
@@ -54,24 +79,20 @@ const handleChange = (e) => {
     try {
       const formDataToSend = new FormData();
   
-      // Append thumbnail file
       formDataToSend.append("thumbnail", formData.thumbnail);
   
-      // Append all other form fields to formDataToSend
       Object.entries(formData).forEach(([key, value]) => {
         if (key !== "thumbnail" && key !== "casting") {
           formDataToSend.append(key, value);
         }
       });
   
-      // Append casting data
       formData.casting.forEach((actor, index) => {
         Object.entries(actor).forEach(([actorKey, actorValue]) => {
           formDataToSend.append(`casting[${index}][${actorKey}]`, actorValue);
         });
       });
   
-      // Send the formDataToSend to the server
       const response = await authAxios().post("/movies/create-movie", formDataToSend);
       const resData = response.data;
   
@@ -116,7 +137,11 @@ const handleChange = (e) => {
       <form
         onSubmit={handleSubmit}
         className="max-w-lg mx-auto mt-8 movies--add--form"
-      >
+      > {formData.thumbnailURL ? (
+        <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" />
+      ) : (
+        null
+      )}
         <label className="block mb-2">
           Thumbnail:
           <input
