@@ -3,9 +3,10 @@ import { authAxios, withoutAuthAxios } from "../config/config";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import { toast } from 'react-toastify';
+import IsLoadingHOC from "../common/IsLoadingHOC";
 
-const EditMovie = () => {
+const EditMovie = (props) => {
+  const { setLoading } = props;
   const navigate = useNavigate();
   const id = useSelector((state) => state?.auth?.movies);
   const [formData, setFormData] = useState({
@@ -90,7 +91,7 @@ const EditMovie = () => {
 
   const updateMovie = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     try {
       const formDataToSend = new FormData();
 
@@ -116,12 +117,14 @@ const EditMovie = () => {
 
       if (resData.status === 1) {
         toast.success(resData.message);
+        setLoading(false)
       } else {
         toast.error(resData.message);
         console.log("Movie creation failed:", resData.message);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
+      setLoading(false)
     }
   };
   useEffect(() => {
@@ -131,7 +134,7 @@ const EditMovie = () => {
   return (
     <>
 
-      <div className="container mx-auto">
+      <div className="container mx-auto lg:pr-[50px] pr-[15px]">
         <h1 className="text-3xl font-bold my-8">Edit Movie</h1>
         <div className="movies--add--form">
           <form>
@@ -316,10 +319,11 @@ const EditMovie = () => {
 
               </div>
 
-              <div className="casting-info-add">
-                {formData.casting.map((actor, index) => (
-                  <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
-                    {/* <label className="block mb-2">
+              <div className="casting-info-add relative">
+                <div className="absolute w-full pb-[50px]">
+                  {formData.casting.map((actor, index) => (
+                    <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
+                      {/* <label className="block mb-2">
               Profile Image:
               <input
                 type="text"
@@ -331,31 +335,33 @@ const EditMovie = () => {
               />
             </label> */}
 
-                    <label className="block mb-2">
-                      Name:
-                      <input
-                        type="text"
-                        name="name"
-                        value={actor.name}
-                        onChange={(e) => handleCastingChange(index, e)}
-                        className="block w-full mt-1"
-                        required
-                      />
-                    </label>
+                      <label className="block mb-2">
+                        Name:
+                        <input
+                          type="text"
+                          name="name"
+                          value={actor.name}
+                          onChange={(e) => handleCastingChange(index, e)}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </label>
 
-                    <label className="block mb-2">
-                      Designation:
-                      <input
-                        type="text"
-                        name="designation"
-                        value={actor.designation}
-                        onChange={(e) => handleCastingChange(index, e)}
-                        className="block w-full mt-1"
-                        required
-                      />
-                    </label>
-                  </div>
-                ))}
+                      <label className="block mb-2">
+                        Designation:
+                        <input
+                          type="text"
+                          name="designation"
+                          value={actor.designation}
+                          onChange={(e) => handleCastingChange(index, e)}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </label>
+                    </div>
+                  ))}
+
+                
 
                 <button
                   type="button"
@@ -372,6 +378,8 @@ const EditMovie = () => {
                 >
                   Add Casting
                 </button>
+
+                </div>
 
               </div>
             </div>
@@ -394,4 +402,4 @@ const EditMovie = () => {
   );
 };
 
-export default EditMovie;
+export default IsLoadingHOC(EditMovie);

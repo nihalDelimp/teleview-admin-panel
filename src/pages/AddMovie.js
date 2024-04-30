@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { authAxios } from "../config/config";
 import { toast } from "react-toastify";
-
-const AddMovie = () => {
+import IsLoadingHOC from "../common/IsLoadingHOC";
+const AddMovie = (props) => {
+  const { setLoading } = props;
   const [formData, setFormData] = useState({
     thumbnail: "",
     title: "",
@@ -75,7 +76,7 @@ const AddMovie = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     try {
       const formDataToSend = new FormData();
 
@@ -120,19 +121,21 @@ const AddMovie = () => {
             },
           ],
         });
+        setLoading(false)
       } else {
         toast.error(resData.message);
         console.log("Movie creation failed:", resData.message);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
+      setLoading(false)
     }
   };
 
 
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto lg:pr-[50px] pr-[15px]">
         <h1 className="text-3xl font-bold my-8">Add Movie</h1>
         <div className="movies--add--form">
           <form
@@ -315,10 +318,11 @@ const AddMovie = () => {
 
               </div>
 
-              <div className="casting-info-add">
-                {formData.casting.map((actor, index) => (
-                  <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
-                    {/* <label className="block mb-2">
+              <div className="casting-info-add relative">
+                <div className="absolute w-full pb-[50px]">
+                  {formData.casting.map((actor, index) => (
+                    <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
+                      {/* <label className="block mb-2">
               Profile Image:
               <input
                 type="text"
@@ -330,47 +334,49 @@ const AddMovie = () => {
               />
             </label> */}
 
-                    <label className="block mb-2">
-                      Name:
-                      <input
-                        type="text"
-                        name="name"
-                        value={actor.name}
-                        onChange={(e) => handleCastingChange(index, e)}
-                        className="block w-full mt-1"
-                        required
-                      />
-                    </label>
+                      <label className="block mb-2">
+                        Name:
+                        <input
+                          type="text"
+                          name="name"
+                          value={actor.name}
+                          onChange={(e) => handleCastingChange(index, e)}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </label>
 
-                    <label className="block mb-2">
-                      Designation:
-                      <input
-                        type="text"
-                        name="designation"
-                        value={actor.designation}
-                        onChange={(e) => handleCastingChange(index, e)}
-                        className="block w-full mt-1"
-                        required
-                      />
-                    </label>
-                  </div>
-                ))}
+                      <label className="block mb-2">
+                        Designation:
+                        <input
+                          type="text"
+                          name="designation"
+                          value={actor.designation}
+                          onChange={(e) => handleCastingChange(index, e)}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </label>
+                    </div>
+                  ))}
 
-                <button
-                  type="button"
-                  className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
-                  onClick={() =>
-                    setFormData((prevState) => ({
-                      ...prevState,
-                      casting: [
-                        ...prevState.casting,
-                        { profileImage: "", name: "", designation: "" },
-                      ],
-                    }))
-                  }
-                >
-                  Add Casting
-                </button>
+                  <button
+                    type="button"
+                    className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
+                    onClick={() =>
+                      setFormData((prevState) => ({
+                        ...prevState,
+                        casting: [
+                          ...prevState.casting,
+                          { profileImage: "", name: "", designation: "" },
+                        ],
+                      }))
+                    }
+                  >
+                    Add Casting
+                  </button>
+
+                </div>
 
               </div>
             </div>
@@ -392,4 +398,4 @@ const AddMovie = () => {
   );
 };
 
-export default AddMovie;
+export default IsLoadingHOC(AddMovie);

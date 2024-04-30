@@ -1,33 +1,60 @@
-.movies--add--form input, .movies--add--form select {
+.movies--add--form input, .movies--add--form select, .movies--add--form textarea {
     min-height: 40px;
     border-radius: 5px;
     padding: 10px 15px;
+
+    @media (max-width: 580px){
+        min-height: 20px;
+    }
 }
 
 .movies--add--form {
-    padding: 20px 25px;
-    border: 1px solid #f3f3f3;
-    border-radius: 10px;
-    background: #f9f9f9;
+    // padding: 20px 25px;
+    // border: 1px solid #f3f3f3;
+    // border-radius: 10px;
+    // background: #f9f9f9;
     .container--addmovie {
         display: flex;
         gap: 20px;
+
+        @media (max-width: 1024px){
+            flex-direction: column;
+        }
 
         .movie-info-add {
             width: 60%;
             display: flex;
             gap: 15px;
+            padding: 20px 25px;
+            border: 1px solid #f3f3f3;
+            border-radius: 10px;
+            background: #f9f9f9;
+
+            
+            @media (max-width: 1024px){
+                width: 100%;
+            }
 
             .banner--add {
                 display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+
+                @media (max-width: 580px){
+                    flex-direction: column;
+                }
 
                 label {
-                    width: 100%;
+                    // width: 100%;
                     display: flex;
                     align-items: center;
                     flex-direction: row-reverse;
                     gap: 10px;
                     justify-content: flex-end;
+
+                    input{
+                        min-height: 20px;
+                    }
                 }
             }
 
@@ -36,11 +63,24 @@
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
+
+                @media (max-width: 1200px){
+                    grid-template-columns: repeat(1, 1fr);
+                }
             }
         }
 
         .casting-info-add {
             width: 40%;
+
+            @media (max-width: 1024px){
+                width: 100%;
+
+                > div{
+                    position: relative;
+                    padding-bottom: 0;
+                }
+            }
 
             .casting--item {background: #f3f4f6;}
 
