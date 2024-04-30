@@ -45,7 +45,7 @@ const Sidebar = ({sidebarState, setSidebarState}) => {
                                     <span className="flex-1 ml-3 text-left whitespace-nowrap" >Movies</span>
                                     <GoChevronDown className="w-6 h-6" />
                                 </button>
-                                <ul className={`py-2 space-y-2 ${dropdowns['dropdown1'] ? 'block' : 'hidden'}`}>
+                                <ul className={`py-2 space-y-2 ${dropdowns['dropdown1'] ? 'hidden' : 'block'}`}>
                                     <li>
                                         <Link to="/movies" className="flex items-center p-2 text-base text-gray-900 tranition duration-75 rounded-lg pl-11 group hover:bg-gray-100">All Movies</Link>
                                     </li>
