@@ -34,8 +34,9 @@ const EditMovie = (props) => {
   });
 
   const handleChange = (e) => {
+    e.preventDefault();
     const { name, type, checked, files } = e.target;
-
+    console.log(files, "files")
     if (type === "file") {
       if (files.length > 0) {
         const uploadedFile = files[0];
@@ -152,35 +153,49 @@ const EditMovie = (props) => {
                   <label className="block mb-2">
                     Thumbnail:
                     <div className="flex items-center">
-                      {formData?.thumbnail ? (
+                      {formData?.thumbnailURL ? (
                         <>
                           <img
-                            src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
+                            src={formData?.thumbnailURL}
                             alt="Uploaded Thumbnail"
                             className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
                           />
-                          <span className="ml-2">{formData?.thumbnail}</span>
-                          {/* <input
-                            type="file"
-                            name="thumbnail"
-                            onChange={handleChange}
-                            className="block w-full mt-1"
-                            required
-                          /> */}
+                          <span className="ml-2">{formData.thumbnail?.name || 'New file selected'}</span>
                         </>
                       ) : (
                         <>
+                          {formData.thumbnail ? (
+                            <>
+                              <img
+                                src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
+                                alt="Thumbnail"
+                                className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
+                              />
+                              <span className="ml-2">{formData.thumbnail}</span>
+                            </>
+                          ) : (
+                            "No file chosen"
+                          )}
                           <input
                             type="file"
                             name="thumbnail"
                             onChange={handleChange}
                             className="block w-full mt-1"
-                            required
+                            style={{ display: "none" }}
                           />
+                          <button
+                            type="button"
+                            className="bg-blue-500 text-white py-1 px-3 ml-2"
+                            onClick={() => document.getElementsByName('thumbnail')[0].click()}
+                          >
+                            Change
+                          </button>
                         </>
                       )}
                     </div>
                   </label>
+
+
 
                   <label className="block mb-2">
                     Title:
