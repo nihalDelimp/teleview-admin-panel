@@ -30,25 +30,27 @@ const EditMovie = (props) => {
         designation: "",
       },
     ],
+    isNewFileUploaded: false,
   });
 
   const handleChange = (e) => {
     const { name, type, checked, files } = e.target;
 
     if (type === "file") {
-      const uploadedFile = files[0];
+      if (files.length > 0) {
+        const uploadedFile = files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          setFormData((prevState) => ({
+            ...prevState,
+            [name]: uploadedFile,
+            thumbnailURL: reader.result,
+            isNewFileUploaded: true
+          }));
+        };
 
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        setFormData((prevState) => ({
-          ...prevState,
-          [name]: uploadedFile,
-          thumbnailURL: reader.result,
-        }));
-      };
-
-      reader.readAsDataURL(uploadedFile);
+        reader.readAsDataURL(uploadedFile);
+      }
     } else {
       const newValue = type === "checkbox" ? checked : e.target.value;
 
@@ -91,42 +93,47 @@ const EditMovie = (props) => {
 
   const updateMovie = async (e) => {
     e.preventDefault();
-    setLoading(true)
-    try {
-      const formDataToSend = new FormData();
+    setLoading(true);
 
+    const formDataToSend = new FormData();
+
+    // Append thumbnail only if it's a new file; otherwise, send back the filename
+    if (formData.isNewFileUploaded) {
       formDataToSend.append("thumbnail", formData.thumbnail);
+    } else {
+      formDataToSend.append("thumbnail", formData.thumbnail); // Here you'd append the filename if it's not a new file
+    }
 
-      Object.entries(formData).forEach(([key, value]) => {
-        if (key !== "thumbnail" && key !== "casting") {
-          formDataToSend.append(key, value);
-        }
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== "thumbnail" && key !== "casting") {
+        formDataToSend.append(key, value);
+      }
+    });
+
+    formData.casting.forEach((actor, index) => {
+      Object.entries(actor).forEach(([actorKey, actorValue]) => {
+        formDataToSend.append(`casting[${index}][${actorKey}]`, actorValue);
       });
+    });
 
-      formData.casting.forEach((actor, index) => {
-        Object.entries(actor).forEach(([actorKey, actorValue]) => {
-          formDataToSend.append(`casting[${index}][${actorKey}]`, actorValue);
-        });
-      });
-
-      const response = await authAxios().post(
-        `/movies/update-movie/${id}`,
-        formDataToSend
-      );
+    try {
+      const response = await authAxios().post(`/movies/update-movie/${id}`, formDataToSend);
       const resData = response.data;
 
       if (resData.status === 1) {
         toast.success(resData.message);
-        setLoading(false)
+        setLoading(false);
       } else {
         toast.error(resData.message);
-        console.log("Movie creation failed:", resData.message);
+        console.log("Movie update failed:", resData.message);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
-      setLoading(false)
+      setLoading(false);
     }
   };
+
+
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -144,25 +151,34 @@ const EditMovie = (props) => {
                 <div className="form--data">
                   <label className="block mb-2">
                     Thumbnail:
-
                     <div className="flex items-center">
-
-                      {formData.thumbnailURL ? (
-                        <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" className="w-[100px] aspect-square rounded-[50px] object-cover object-center" />
+                      {formData?.thumbnail ? (
+                        <>
+                          <img
+                            src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
+                            alt="Uploaded Thumbnail"
+                            className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
+                          />
+                          <span className="ml-2">{formData?.thumbnail}</span>
+                          {/* <input
+                            type="file"
+                            name="thumbnail"
+                            onChange={handleChange}
+                            className="block w-full mt-1"
+                            required
+                          /> */}
+                        </>
                       ) : (
-                        <img
-                          src={`${process.env.REACT_APP_BASEURL}/${formData?.thumbnail}`}
-                          className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
-                        />
+                        <>
+                          <input
+                            type="file"
+                            name="thumbnail"
+                            onChange={handleChange}
+                            className="block w-full mt-1"
+                            required
+                          />
+                        </>
                       )}
-
-                      <input
-                        type="file"
-                        name="thumbnail"
-                        onChange={handleChange}
-                        className="block w-full mt-1"
-                        required
-                      />
                     </div>
                   </label>
 
@@ -361,23 +377,23 @@ const EditMovie = (props) => {
                     </div>
                   ))}
 
-                
 
-                <button
-                  type="button"
-                  className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
-                  onClick={() =>
-                    setFormData((prevState) => ({
-                      ...prevState,
-                      casting: [
-                        ...prevState.casting,
-                        { profileImage: "", name: "", designation: "" },
-                      ],
-                    }))
-                  }
-                >
-                  Add Casting
-                </button>
+
+                  <button
+                    type="button"
+                    className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
+                    onClick={() =>
+                      setFormData((prevState) => ({
+                        ...prevState,
+                        casting: [
+                          ...prevState.casting,
+                          { profileImage: "", name: "", designation: "" },
+                        ],
+                      }))
+                    }
+                  >
+                    Add Casting
+                  </button>
 
                 </div>
 
