@@ -8,18 +8,21 @@ import { Link } from 'react-router-dom';
 import DeleteModal from '../modal/DeleteModal';
 import { useDispatch } from 'react-redux';
 import { setmovies } from '../Redux/reducers/authSlice';
+import TrailerModal from '../components/TrailerModal';
 
 const AllMovies = () => {
   const dispatch = useDispatch()
   const [movies, setMovies] = useState([]);
   const [deleteMovie, setDeleteMovie] = useState(false);
+  const [trailerUrl, setTrailerUrl] = useState('');
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
 
   const fetchMovies = async () => {
     try {
       const response = await withoutAuthAxios().get('/movies/get-all-movies');
       const resData = response.data;
       if (resData.status === 1) {
-        setMovies(resData.data); 
+        setMovies(resData.data);
       } else {
         toast.error(resData.message);
       }
@@ -49,10 +52,10 @@ const AllMovies = () => {
   useEffect(() => {
     fetchMovies();
   }, []);
-const handleEdit =(e)=>{
-  console.log(e)
-  dispatch(setmovies(e))
-}
+  const handleEdit = (e) => {
+    console.log(e)
+    dispatch(setmovies(e))
+  }
   return (
     <>
       <div className="container mx-auto">
@@ -67,10 +70,13 @@ const handleEdit =(e)=>{
                 <p className="text-gray-700 group-hover:text-white">{movie?.description?.substring(0, 50)}...</p>
                 <p className="text-gray-600 mt-2 group-hover:text-white"><b>Rating:</b> {movie.rating}</p>
 
-                <Link to={movie.trailerURL} target="_blank" rel="noopener noreferrer" className="py-2 px-5 bg-black text-white font-semibold rounded-full shadow-md flex items-center justify-center gap-[5px] mt-3 group-hover:text-black group-hover:bg-white"><IoPlaySharp /> Watch Trailer</Link>
+                <button onClick={() => { setTrailerUrl(movie.trailerURL); setIsTrailerModalOpen(true); }} className="py-2 px-5 bg-black text-white font-semibold rounded-full shadow-md flex items-center justify-center gap-[5px] mt-3 group-hover:text-black group-hover:bg-white">
+                  <IoPlaySharp /> Watch Trailer
+                </button>
 
+                <TrailerModal isOpen={isTrailerModalOpen} onClose={() => setIsTrailerModalOpen(false)} trailerUrl={trailerUrl} />
                 <div className='flex gap-[5px] my-3'>
-                  <Link to='/edit-movie' className="py-2 px-1 text-gray-800 font-semibold flex items-center justify-center gap-[5px] group-hover:text-white" onClick={()=> handleEdit(movie._id)}>
+                  <Link to='/edit-movie' className="py-2 px-1 text-gray-800 font-semibold flex items-center justify-center gap-[5px] group-hover:text-white" onClick={() => handleEdit(movie._id)}>
                     <FaPen /> Edit
                   </Link>
 
@@ -80,7 +86,6 @@ const handleEdit =(e)=>{
                   >
                     <RiDeleteBin6Line /> Delete
                   </button>
-
                 </div>
               </div>
             </div>

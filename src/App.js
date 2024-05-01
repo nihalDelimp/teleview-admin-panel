@@ -6,7 +6,7 @@ import CommonLayout from "./layout/CommonLayout";
 import Login from "./components/login";
 import Movies from "./pages/AddMovie";
 import AllMovies from "./pages/AllMovies";
-import AddBanner from "./pages/AddBanner";
+// import AddBanner from "./pages/AddBanner";
 import EditMovie from "./pages/EditMovie";
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
             path="/Home"
             element={
               <CommonLayout>
-                <Home/>
+                <Home />
               </CommonLayout>
             }
           />
@@ -47,14 +47,14 @@ function App() {
               </CommonLayout>
             }
           />
-          <Route
+          {/* <Route
             path="/add-banner"
             element={
               <CommonLayout>
                 <AddBanner />
               </CommonLayout>
             }
-          />
+          /> */}
         </Routes>
       </Router>
     </>
