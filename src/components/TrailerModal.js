@@ -17,7 +17,7 @@ const TrailerModal = ({ isOpen, onClose, trailerUrl }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center">
             <div className="bg-white rounded-lg relative">
-                <button onClick={onClose} className="absolute top-2 right-2 text-2xl font-bold">&times;</button>
+                <button onClick={onClose} className="absolute top-2 right-2 text-2xl font-bold text-white">&times;</button>
 
                 {isLoading && (
                     <div className="absolute inset-0 flex justify-center items-center bg-white bg-opacity-90">
