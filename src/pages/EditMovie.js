@@ -23,6 +23,7 @@ const EditMovie = (props) => {
     trailerURL: "",
     addBanner: false,
     addoscar: false,
+    addComingSoon: false,
     casting: [
       {
         profileImage: "",
@@ -135,6 +136,13 @@ const EditMovie = (props) => {
   };
 
 
+  const removeCastingItem = (indexToRemove) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      casting: prevState.casting.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
   useEffect(() => {
     fetchMovies();
   }, []);
@@ -152,7 +160,7 @@ const EditMovie = (props) => {
                 <div className="form--data">
                   <label className="block mb-2">
                     Thumbnail:
-                    <div className="flex items-center">
+                    <div className="flex items-center flex-wrap">
                       {formData?.thumbnailURL ? (
                         <>
                           <img
@@ -176,20 +184,22 @@ const EditMovie = (props) => {
                           ) : (
                             "No file chosen"
                           )}
-                          <input
-                            type="file"
-                            name="thumbnail"
-                            onChange={handleChange}
-                            className="block w-full mt-1"
-                            style={{ display: "none" }}
-                          />
-                          <button
-                            type="button"
-                            className="bg-blue-500 text-white py-1 px-3 ml-2"
-                            onClick={() => document.getElementsByName('thumbnail')[0].click()}
-                          >
-                            Change
-                          </button>
+                          <div>
+                            <input
+                              type="file"
+                              name="thumbnail"
+                              onChange={handleChange}
+                              className="block w-full mt-1"
+                              style={{ display: "none" }}
+                            />
+                            <button
+                              type="button"
+                              className="bg-blue-500 text-white py-1 px-3 ml-2"
+                              onClick={() => document.getElementsByName('thumbnail')[0].click()}
+                            >
+                              Change
+                            </button>
+                          </div>
                         </>
                       )}
                     </div>
@@ -331,6 +341,16 @@ const EditMovie = (props) => {
                         className="block mt-1"
                       />
                     </label>
+                    <label className="block mb-2">
+                      Comming Soon:
+                      <input
+                        type="checkbox"
+                        name="addcommingsoon"
+                        checked={formData.addComingSoon}
+                        onChange={handleChange}
+                        className="block mt-1"
+                      />
+                    </label>
                   </div>
                   <label className="block mb-2">
                     Trailer URL:
@@ -351,20 +371,20 @@ const EditMovie = (props) => {
               </div>
 
               <div className="casting-info-add relative">
-                <div className="absolute w-full pb-[50px]">
+                <div className="absolute w-full pb-[50px] casting--list--container">
                   {formData.casting.map((actor, index) => (
                     <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
                       {/* <label className="block mb-2">
-              Profile Image:
-              <input
-                type="text"
-                name="profileImage"
-                value={actor.profileImage}
-                onChange={(e) => handleCastingChange(index, e)}
-                className="block w-full mt-1"
-                required
-              />
-            </label> */}
+                        Profile Image:
+                        <input
+                          type="text"
+                          name="profileImage"
+                          value={actor.profileImage}
+                          onChange={(e) => handleCastingChange(index, e)}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </label> */}
 
                       <label className="block mb-2">
                         Name:
@@ -389,6 +409,7 @@ const EditMovie = (props) => {
                           required
                         />
                       </label>
+                      <div className="remove--item text-red-500 w-full cursor-pointer text-right" onClick={() => removeCastingItem(index)} >Remove</div>
                     </div>
                   ))}
 

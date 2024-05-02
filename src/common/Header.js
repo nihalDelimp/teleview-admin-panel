@@ -6,6 +6,10 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 
 const Header = ({toggleSidebar}) => {
+    const user = useSelector((state) => state?.auth?.user);
+
+    console.log(user?.fname,'useruseruseruser')
+
     const navigate = useNavigate();
 
     const [logoutDropdown, setLogoutDropdown] = useState(false)
@@ -60,17 +64,17 @@ const Header = ({toggleSidebar}) => {
                                     >
                                         <div className="px-4 py-3" role="none">
                                             <p className="text-sm text-gray-900" role="none">
-                                                Admin
+                                                {user?.fname}
                                             </p>
                                             <p
                                                 className="text-sm font-medium text-gray-900 truncate"
                                                 role="none"
                                             >
-                                                admin@gmail.com
+                                                {user?.email}
                                             </p>
                                         </div>
                                         <ul className="py-1" role="none">
-                                            <li onClick={handlelogout}>
+                                            <li onClick={handlelogout} className='cursor-pointer'>
                                                 <span
                                                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</span>
                                             </li>

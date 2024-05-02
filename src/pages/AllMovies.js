@@ -9,8 +9,10 @@ import DeleteModal from '../modal/DeleteModal';
 import { useDispatch } from 'react-redux';
 import { setmovies } from '../Redux/reducers/authSlice';
 import TrailerModal from '../components/TrailerModal';
+import IsLoadingHOC from '../common/IsLoadingHOC';
 
-const AllMovies = () => {
+const AllMovies = (props) => {
+  const { setLoading } = props;
   const dispatch = useDispatch()
   const [movies, setMovies] = useState([]);
   const [deleteMovie, setDeleteMovie] = useState(false);
@@ -18,16 +20,20 @@ const AllMovies = () => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
 
   const fetchMovies = async () => {
+    setLoading(true);
     try {
       const response = await withoutAuthAxios().get('/movies/get-all-movies');
       const resData = response.data;
       if (resData.status === 1) {
         setMovies(resData.data);
+        setLoading(false);
       } else {
         toast.error(resData.message);
+        setLoading(false);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
+      setLoading(false);
     }
   };
 
@@ -101,4 +107,4 @@ const AllMovies = () => {
   );
 };
 
-export default AllMovies;
+export default IsLoadingHOC(AllMovies);

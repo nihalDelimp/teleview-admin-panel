@@ -9,10 +9,6 @@
 }
 
 .movies--add--form {
-    // padding: 20px 25px;
-    // border: 1px solid #f3f3f3;
-    // border-radius: 10px;
-    // background: #f9f9f9;
     .container--addmovie {
         display: flex;
         gap: 20px;
@@ -86,6 +82,16 @@
 
             button {
                 background: #000;
+            }
+        }
+    }
+}
+
+.casting--list--container {
+    .casting--item{
+        &:first-child {
+            .remove--item {
+                display: none;
             }
         }
     }

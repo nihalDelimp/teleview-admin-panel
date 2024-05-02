@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { authAxios } from "../config/config";
 import { toast } from "react-toastify";
 import IsLoadingHOC from "../common/IsLoadingHOC";
 const AddMovie = (props) => {
+  const formRef = useRef(null);
   const { setLoading } = props;
   const [formData, setFormData] = useState({
     thumbnail: "",
@@ -18,6 +19,7 @@ const AddMovie = (props) => {
     trailerURL: "",
     addBanner: false,
     addoscar: false,
+    addComingSoon: false,
     casting: [
       {
         profileImage: "",
@@ -113,6 +115,7 @@ const AddMovie = (props) => {
           trailerURL: "",
           addBanner: false,
           addoscar: false,
+          addComingSoon: false,
           casting: [
             {
               profileImage: "",
@@ -122,6 +125,7 @@ const AddMovie = (props) => {
           ],
         });
         setLoading(false)
+        formRef.current.reset();
       } else {
         toast.error(resData.message);
         console.log("Movie creation failed:", resData.message);
@@ -132,6 +136,13 @@ const AddMovie = (props) => {
     }
   };
 
+  const removeCastingItem = (indexToRemove) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      casting: prevState.casting.filter((_, index) => index !== indexToRemove),
+    }));
+  };
+
 
   return (
     <>
@@ -140,6 +151,7 @@ const AddMovie = (props) => {
         <div className="movies--add--form">
           <form
             onSubmit={handleSubmit}
+            ref={formRef}
           >
 
             <div className="container--addmovie">
@@ -155,13 +167,15 @@ const AddMovie = (props) => {
                         null
                       )}
 
-                      <input
-                        type="file"
-                        name="thumbnail"
-                        onChange={handleChange}
-                        className="block w-full mt-1"
-                        required
-                      />
+                      <div>
+                        <input
+                          type="file"
+                          name="thumbnail"
+                          onChange={handleChange}
+                          className="block w-full mt-1"
+                          required
+                        />
+                      </div>
                     </div>
                   </label>
 
@@ -289,12 +303,24 @@ const AddMovie = (props) => {
                       />
 
                     </label>
-                    <label className="block mb-2">
+                    <label className="block mb-2" htmlFor={`add-Oscar`}>
                       Add to Oscar:
                       <input
                         type="checkbox"
                         name="addoscar"
+                        id="add-Oscar"
                         checked={formData.addoscar}
+                        onChange={handleChange}
+                        className="block mt-1"
+                      />
+                    </label>
+                    <label className="block mb-2" htmlFor={`addcomming-soon`}>
+                      Comming Soon:
+                      <input
+                        type="checkbox"
+                        id="addcomming-soon"
+                        name="addComingSoon"
+                        checked={formData.addComingSoon}
                         onChange={handleChange}
                         className="block mt-1"
                       />
@@ -319,7 +345,7 @@ const AddMovie = (props) => {
               </div>
 
               <div className="casting-info-add relative">
-                <div className="absolute w-full pb-[50px]">
+                <div className="absolute w-full pb-[50px] casting--list--container">
                   {formData.casting.map((actor, index) => (
                     <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
                       {/* <label className="block mb-2">
@@ -357,6 +383,7 @@ const AddMovie = (props) => {
                           required
                         />
                       </label>
+                      <div className="remove--item text-red-500 w-full cursor-pointer text-right" onClick={() => removeCastingItem(index)} >Remove</div>
                     </div>
                   ))}
 

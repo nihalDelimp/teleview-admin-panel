@@ -30,8 +30,8 @@ const Sidebar = ({ sidebarState, setSidebarState }) => {
                         <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200">
                             <ul className="pb-2 space-y-2">
                                 <li>
-                                    <Link to="/Home" className="flex items-center p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group">
-                                        <AiOutlineHome className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                                    <Link to="/home" className={`flex items-center p-2 text-base text-gray-900 rounded-lg group ${location.pathname === '/home' ? 'bg-black text-white shadow-lg' : ''}`}>
+                                        <AiOutlineHome className="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75" />
                                         <span className="ml-3" >Welcome</span>
                                     </Link>
                                 </li>
@@ -47,7 +47,7 @@ const Sidebar = ({ sidebarState, setSidebarState }) => {
                                     </button>
                                     <ul className={`py-2 space-y-2 ${dropdowns['dropdown1'] ? 'hidden' : 'block'}`}>
                                         <li>
-                                            <Link to="/movies" className="flex items-center p-2 text-base text-gray-900 tranition duration-75 rounded-lg pl-11 group hover:bg-gray-100">All Movies</Link>
+                                            <Link to="/movies" className={`flex items-center p-2 text-base text-gray-900 tranition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ${location.pathname === '/movies' ? 'bg-gray-100' : ''} `}>All Movies</Link>
                                         </li>
                                         <li>
                                             <Link to="/add-movie" className={`flex items-center p-2 text-base text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 ${location.pathname === '/add-movie' ? 'bg-gray-100' : ''}`}>Add Movie</Link>

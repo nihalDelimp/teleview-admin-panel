@@ -24,7 +24,7 @@ function App() {
             }
           />
           <Route
-            path="/Home"
+            path="/home"
             element={
               <CommonLayout>
                 <Home />
