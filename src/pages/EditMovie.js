@@ -342,7 +342,7 @@ const EditMovie = (props) => {
                       />
                     </label>
                     <label className="block mb-2">
-                      Comming Soon:
+                      Coming Soon:
                       <input
                         type="checkbox"
                         name="addcommingsoon"

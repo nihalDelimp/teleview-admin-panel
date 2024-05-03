@@ -315,7 +315,7 @@ const AddMovie = (props) => {
                       />
                     </label>
                     <label className="block mb-2" htmlFor={`addcomming-soon`}>
-                      Comming Soon:
+                      Coming Soon:
                       <input
                         type="checkbox"
                         id="addcomming-soon"
