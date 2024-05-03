@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { setmovies } from '../Redux/reducers/authSlice';
 import TrailerModal from '../components/TrailerModal';
 import IsLoadingHOC from '../common/IsLoadingHOC';
+import Pagination from '../common/Pagination';
 
 const AllMovies = (props) => {
   const { setLoading } = props;
@@ -19,13 +20,24 @@ const AllMovies = (props) => {
   const [trailerUrl, setTrailerUrl] = useState('');
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
 
+  const [currentPage, setcurrentPage] = useState(1);
+  const [postsPerPage, setpostsPerPage] = useState(8);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const paginate = (pageNumber) => setcurrentPage(pageNumber);
+
   const fetchMovies = async () => {
     setLoading(true);
     try {
-      const response = await withoutAuthAxios().get('/movies/get-all-movies');
+      const response = await withoutAuthAxios().get('/movies/get-all-movies', {
+        params: {
+          page: currentPage,
+          limit: postsPerPage
+        }
+      });
       const resData = response.data;
       if (resData.status === 1) {
         setMovies(resData.data);
+        setTotalPosts(resData?.count?.total);
         setLoading(false);
       } else {
         toast.error(resData.message);
@@ -57,7 +69,7 @@ const AllMovies = (props) => {
 
   useEffect(() => {
     fetchMovies();
-  }, []);
+  }, [currentPage]);
   const handleEdit = (e) => {
     console.log(e)
     dispatch(setmovies(e))
@@ -102,6 +114,14 @@ const AllMovies = (props) => {
       {deleteMovie && (
         <DeleteModal />
       )}
+
+
+      <Pagination
+        currentPage={currentPage}
+        totalPosts={totalPosts}
+        postsPerPage={postsPerPage}
+        paginate={paginate}
+      />
 
     </>
   );
