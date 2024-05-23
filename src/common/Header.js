@@ -31,14 +31,14 @@ const Header = ({toggleSidebar}) => {
       }
 
     return (
-        <header className="fixed z-30 w-[100%] bg-[#000] border-b border-gray-200">
-            <nav>
-                <div className="px-3 py-3 lg:px-5 lg:pl-3">
+        <header className="header fixed z-30 w-[100%] bg-[#000]">
+            <nav className='NavBar-wrapper w-full max-w-[1665px] m-auto px-[15px] py-[10px] items-center'>
+                <div className="px-3 lg:px-5">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center justify-start">
 
                             <Link to="/" className="flex ml-2 md:mr-24">
-                                <img src='/assets/images/logo.png' className="h-8 mr-3" alt="FlowBite Logo" />
+                                <img src='/assets/images/logo.png' className="block sm:w-[230px] w-[150px]" alt="FlowBite Logo" />
                             </Link>
 
                         </div>

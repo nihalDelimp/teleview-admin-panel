@@ -77,7 +77,7 @@ const AllMovies = (props) => {
   return (
     <>
       <div className="container mx-auto">
-        <h1 className="text-3xl font-bold my-8">All Movies</h1>
+        <h1 className="text-3xl text-white font-bold my-8">All Movies</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {movies?.map((movie) => (
@@ -88,7 +88,7 @@ const AllMovies = (props) => {
                 <p className="text-gray-700 group-hover:text-white">{movie?.description?.substring(0, 50)}...</p>
                 <p className="text-gray-600 mt-2 group-hover:text-white"><b>Rating:</b> {movie.rating}</p>
 
-                <button onClick={() => { setTrailerUrl(movie.trailerURL); setIsTrailerModalOpen(true); }} className="py-2 px-5 bg-black text-white font-semibold rounded-full shadow-md flex items-center justify-center gap-[5px] mt-3 group-hover:text-black group-hover:bg-white">
+                <button onClick={() => { setTrailerUrl(movie.trailerURL); setIsTrailerModalOpen(true); }} className="py-2 px-5 bg-blue-700 text-white font-semibold rounded-full shadow-md flex items-center justify-center gap-[5px] mt-3 group-hover:text-black group-hover:bg-white">
                   <IoPlaySharp /> Watch Trailer
                 </button>
 

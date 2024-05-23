@@ -34,13 +34,13 @@ const Pagination = ({ postsPerPage, totalPosts, currentPage, paginate }) => {
                                 type="button"
                                 className={` ${currentPage === 1 ? 'cursor-not-allowed' : ''} text-black px-5 pl-0`}
                             >
-                                <span className="flex items-center gap-[10px]"><GrPrevious  /> Prev</span>
+                                <span className="flex items-center gap-[10px] text-white"><GrPrevious  /> Prev</span>
                             </button>
                         </div>
 
                         <div className="flex">
                             {pageNumbers?.map(number => (
-                                <div key={number} className={` w-[30px] aspect-square rounded-[5px] flex items-center justify-center text-black cursor-pointer ${currentPage === number ? 'bg-black text-white' : ''}`} onClick={() => paginate(number)}>
+                                <div key={number} className={` w-[30px] aspect-square rounded-[5px] flex items-center justify-center text-white cursor-pointer ${currentPage === number ? 'bg-black text-white' : ''}`} onClick={() => paginate(number)}>
                                     {number}
                                 </div>
                             ))}
@@ -58,7 +58,7 @@ const Pagination = ({ postsPerPage, totalPosts, currentPage, paginate }) => {
                                 type="button"
                                 className={` ${currentPage === pageNumbers.length ? 'cursor-not-allowed' : ''} text-black px-5`}
                             >
-                                <span className="flex items-center gap-[10px]">Next <GrNext /></span>
+                                <span className="flex items-center gap-[10px] text-white">Next <GrNext /></span>
                             </button>
                         </div>
                     </div>
@@ -66,7 +66,7 @@ const Pagination = ({ postsPerPage, totalPosts, currentPage, paginate }) => {
 
 
                 {totalPosts > 0 && (
-                    <div style={{ marginBottom: '10px', color: 'black' }}>
+                    <div style={{ marginBottom: '10px', color: 'white' }}>
                         Showing {indexOfFirstPost} to {indexOfLastPost} of {totalPosts} Entries
                     </div>
                 )}

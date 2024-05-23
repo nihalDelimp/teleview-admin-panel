@@ -147,7 +147,7 @@ const AddMovie = (props) => {
   return (
     <>
       <div className="container mx-auto lg:pr-[50px] pr-[15px]">
-        <h1 className="text-3xl font-bold my-8">Add Movie</h1>
+        <h1 className="text-3xl font-bold my-8 text-white">Add Movie</h1>
         <div className="movies--add--form">
           <form
             onSubmit={handleSubmit}
@@ -347,7 +347,7 @@ const AddMovie = (props) => {
               <div className="casting-info-add relative">
                 <div className="absolute w-full pb-[50px] casting--list--container">
                   {formData.casting.map((actor, index) => (
-                    <div key={index} className="mt-4 border border-gray-300 p-4 rounded casting--item">
+                    <div key={index} className="border border-gray-300 p-4 casting--item">
                       {/* <label className="block mb-2">
               Profile Image:
               <input
@@ -389,7 +389,7 @@ const AddMovie = (props) => {
 
                   <button
                     type="button"
-                    className="mt-4 bg-blue-500 text-white min-w-[200px] py-2 px-4 rounded"
+                    className="mt-5 rounded-0 text-white transition-all font-semibold bg-blue-700 hover:bg-white hover:text-blue-700 py-3 px-14 mr-2"
                     onClick={() =>
                       setFormData((prevState) => ({
                         ...prevState,
@@ -411,7 +411,7 @@ const AddMovie = (props) => {
             <div className="flex items-center justify-between gap-[10px]">
               <button
                 type="submit"
-                className="mt-4 bg-black text-white min-w-[200px] py-2 px-4 rounded"
+                className="mt-5 rounded-0 text-white transition-all font-semibold bg-blue-700 hover:bg-white hover:text-blue-700 py-3 px-14 mr-2"
               >
                 Submit
               </button>

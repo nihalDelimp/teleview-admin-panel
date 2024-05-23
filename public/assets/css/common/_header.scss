@@ -1,6 +1,16 @@
+.common--bg{
+    background: linear-gradient(270deg, #4363c2 6%, #1e3169 97%) !important;
+}
+.sub-menu-bg{
+    background: linear-gradient(270deg, #4363c2 0%, #1e3169 0%) !important;
+}
+.menu--bg{
+    background: linear-gradient(270deg, #4363c2 0%, #1e3169 0%) !important;
+    border-radius: 0;
+}
 .header {
-    background-color: #786BD2;
-    padding: 10px 0px;
+    background: linear-gradient(270deg, #4363c2 6%, #1e3169 97%) !important;
+    padding: 0;
     position: sticky;
     top: 0px;
     z-index: 999;
