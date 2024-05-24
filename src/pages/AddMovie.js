@@ -147,7 +147,18 @@ const AddMovie = (props) => {
   return (
     <>
       <div className="container mx-auto lg:pr-[50px] pr-[15px]">
+        <div className="flex justify-between	items-center">
+        <div>
         <h1 className="text-3xl font-bold my-8 text-white">Add Movie</h1>
+        </div> 
+        <div>
+          <span className="btn btn-primary btn-file">
+          Bulk Upload <input type="file" onchange="readURL(this);" />
+          </span>
+
+        </div>
+        </div>
+       
         <div className="movies--add--form">
           <form
             onSubmit={handleSubmit}
