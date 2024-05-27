@@ -36,8 +36,14 @@ const AllMovies = (props) => {
       });
       const resData = response.data;
       if (resData.status === 1) {
-        setMovies(resData.data);
+        const updatedMovies = resData.data.map(movie => ({
+          ...movie,
+          thumbnail: movie.thumbnail && (movie.thumbnail.includes('http://') || movie.thumbnail.includes('https://'))
+            ? movie.thumbnail
+            : movie.thumbnail.substring(movie.thumbnail.indexOf('/thumbnails/'))
+        }));
         setTotalPosts(resData?.count?.total);
+        setMovies(updatedMovies);
         setLoading(false);
       } else {
         toast.error(resData.message);
@@ -82,7 +88,16 @@ const AllMovies = (props) => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {movies?.map((movie) => (
             <div key={movie._id} className="bg-white rounded-lg shadow-md p-2 hover:bg-black transition-all group">
-              <img src={`${process.env.REACT_APP_BASEURL}/${movie.thumbnail}`} alt={movie.title} className="mb-2 w-full rounded-lg h-[250px] object-cover object-center" />
+              <img
+                src={
+                  movie.thumbnail && (movie.thumbnail.includes('http://') || movie.thumbnail.includes('https://'))
+                    ? movie.thumbnail
+                    : `${process.env.REACT_APP_BASEURL}/${movie.thumbnail}`
+                }
+                alt={movie.title}
+                className="mb-2 w-full rounded-lg h-[250px] object-cover object-center"
+              />
+
               <div className='p-2'>
                 <h2 className="text-xl font-semibold mb-2 group-hover:text-white">{movie.title}</h2>
                 <p className="text-gray-700 group-hover:text-white">{movie?.description?.substring(0, 50)}...</p>
