@@ -2,9 +2,11 @@ import React, { useRef, useState } from "react";
 import { authAxios } from "../config/config";
 import { toast } from "react-toastify";
 import IsLoadingHOC from "../common/IsLoadingHOC";
+import { useNavigate } from "react-router-dom";
 const AddMovie = (props) => {
   const formRef = useRef(null);
   const { setLoading } = props;
+  const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({
     thumbnail: "",
     title: "",
@@ -142,6 +144,35 @@ const AddMovie = (props) => {
       casting: prevState.casting.filter((_, index) => index !== indexToRemove),
     }));
   };
+  const navigate = useNavigate();
+
+
+  const handleFileChange = async (event) => {
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
+
+    if (!selectedFile) {
+      alert("Please select a file first!");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+
+      const response = await authAxios().post("/movies/import_movies", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+if (response?.data?.status === 1) {
+  navigate("/movies")
+}
+      
+    } catch (error) {
+      console.error("Error uploading file", error);
+    }
+  };
 
 
   return (
@@ -153,7 +184,7 @@ const AddMovie = (props) => {
         </div> 
         <div>
           <span className="btn btn-primary btn-file">
-          Bulk Upload <input type="file" onchange="readURL(this);" />
+          Bulk Upload <input type="file" onChange={handleFileChange} />
           </span>
 
         </div>
