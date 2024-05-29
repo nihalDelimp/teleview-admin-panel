@@ -147,6 +147,18 @@ const EditMovie = (props) => {
     fetchMovies();
   }, []);
 
+  
+ function extractThumbnailPath(fullPath) {
+  const thumbnailIndex = fullPath.indexOf('/thumbnails/');
+  if (thumbnailIndex !== -1) {
+      return `${process.env.NEXT_PUBLIC_API_BASE_URL}${fullPath.substring(thumbnailIndex)}`;
+  } else {
+      return fullPath;
+  }
+}
+
+
+  console.log(formData.thumbnail,"thumbnailURLthumbnailURLthumbnailURL");
   return (
     <>
 
@@ -175,7 +187,7 @@ const EditMovie = (props) => {
                           {formData.thumbnail ? (
                             <>
                               <img
-                                src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
+                                src={`${extractThumbnailPath(formData.thumbnail)}`}
                                 alt="Thumbnail"
                                 className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
                               />
