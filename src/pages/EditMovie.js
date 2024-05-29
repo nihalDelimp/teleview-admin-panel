@@ -151,7 +151,7 @@ const EditMovie = (props) => {
  function extractThumbnailPath(fullPath) {
   const thumbnailIndex = fullPath.indexOf('/thumbnails/');
   if (thumbnailIndex !== -1) {
-      return `${process.env.NEXT_PUBLIC_API_BASE_URL}${fullPath.substring(thumbnailIndex)}`;
+      return `${process.env.REACT_APP_BASEURL}${fullPath.substring(thumbnailIndex)}`;
   } else {
       return fullPath;
   }
