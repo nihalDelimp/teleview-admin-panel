@@ -130,11 +130,13 @@ const AddMovie = (props) => {
         formRef.current.reset();
       } else {
         toast.error(resData.message);
-        console.log("Movie creation failed:", resData.message);
+        console.log("Movie creation failed true:", resData.message);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
       setLoading(false)
+      console.log("Movie creation failed true:", error);
+
     }
   };
 
