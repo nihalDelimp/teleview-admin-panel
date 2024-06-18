@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const AddMovie = (props) => {
   const formRef = useRef(null);
   const { setLoading } = props;
+  const [imageUrl, setImageUrl] = useState("")
+
   const [file, setFile] = useState(null);
   const [formData, setFormData] = useState({
     thumbnail: "",
@@ -31,16 +33,6 @@ const AddMovie = (props) => {
     ],
   });
 
-  // const handleChange = (e) => {
-  //   const { name, type, checked, files } = e.target;
-
-  //   const newValue = type === "file" ? files[0] : type === "checkbox" ? checked : e.target.value;
-
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [name]: newValue,
-  //   }));
-  // };
   const handleChange = (e) => {
     const { name, type, checked, files } = e.target;
 
@@ -53,8 +45,8 @@ const AddMovie = (props) => {
         setFormData((prevState) => ({
           ...prevState,
           [name]: uploadedFile,
-          // thumbnailURL: reader.result
         }));
+        setImageUrl(reader.result)
       };
 
       reader.readAsDataURL(uploadedFile);
@@ -126,6 +118,7 @@ const AddMovie = (props) => {
             },
           ],
         });
+        setImageUrl('');
         setLoading(false)
         formRef.current.reset();
       } else {
@@ -205,8 +198,8 @@ const AddMovie = (props) => {
                     Thumbnail:
 
                     <div className="flex items-center">
-                      {formData.thumbnailURL ? (
-                        <img src={formData.thumbnailURL} alt="Uploaded Thumbnail" className="w-[100px] aspect-square rounded-[50px] object-cover object-center" />
+                      {imageUrl ? (
+                        <img src={imageUrl} alt="Uploaded Thumbnail" className="w-[100px] aspect-square rounded-[50px] object-cover object-center" />
                       ) : (
                         null
                       )}
