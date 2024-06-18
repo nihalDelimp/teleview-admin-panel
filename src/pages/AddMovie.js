@@ -53,7 +53,7 @@ const AddMovie = (props) => {
         setFormData((prevState) => ({
           ...prevState,
           [name]: uploadedFile,
-          thumbnailURL: reader.result
+          // thumbnailURL: reader.result
         }));
       };
 
@@ -167,10 +167,10 @@ const AddMovie = (props) => {
           "Content-Type": "multipart/form-data",
         },
       });
-if (response?.data?.status === 1) {
-  navigate("/movies")
-}
-      
+      if (response?.data?.status === 1) {
+        navigate("/movies")
+      }
+
     } catch (error) {
       console.error("Error uploading file", error);
     }
@@ -181,17 +181,17 @@ if (response?.data?.status === 1) {
     <>
       <div className="container mx-auto lg:pr-[50px] pr-[15px]">
         <div className="flex justify-between	items-center">
-        <div>
-        <h1 className="text-3xl font-bold my-8 text-white">Add Movie</h1>
-        </div> 
-        <div>
-          <span className="btn btn-primary btn-file">
-          Bulk Upload <input type="file" onChange={handleFileChange} />
-          </span>
+          <div>
+            <h1 className="text-3xl font-bold my-8 text-white">Add Movie</h1>
+          </div>
+          <div>
+            <span className="btn btn-primary btn-file">
+              Bulk Upload <input type="file" onChange={handleFileChange} />
+            </span>
 
+          </div>
         </div>
-        </div>
-       
+
         <div className="movies--add--form">
           <form
             onSubmit={handleSubmit}
