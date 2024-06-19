@@ -161,11 +161,19 @@ const EditMovie = (props) => {
                         />
                       ) : formData.thumbnail ? (
                         <>
-                          <img
-                            src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
-                            alt="Thumbnail"
-                            className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
-                          />
+                          {formData.thumbnail.startsWith('http') || formData.thumbnail.startsWith('https') ? (
+                            <img
+                              src={formData.thumbnail}
+                              alt="Thumbnail"
+                              className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
+                            />
+                          ) : (
+                            <img
+                              src={`${process.env.REACT_APP_BASEURL}/${formData.thumbnail}`}
+                              alt="Thumbnail"
+                              className="w-[100px] aspect-square rounded-[50px] object-cover object-center"
+                            />
+                          )}
                           {/* <span className="ml-2">{formData.thumbnail}</span> */}
                         </>
                       ) : (
